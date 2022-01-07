@@ -3,23 +3,28 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Eleicao {
-    private Candidato candidato1;
-    private Candidato candidato2;
-    private Candidato candidato3;
-    private Candidato candidato4;
-    private Candidato candidato5;
+    private Map<Integer, Candidato> candidatos = new HashMap<>();
 
     private int votosNulos = 0;
     private int votosEmBranco = 0;
 
-    public Eleicao(Candidato candidato1, Candidato candidato2, Candidato candidato3, Candidato candidato4, Candidato candidato5) {
-        this.candidato1 = candidato1;
-        this.candidato2 = candidato2;
-        this.candidato3 = candidato3;
-        this.candidato4 = candidato4;
-        this.candidato5 = candidato5;
 
-        System.out.println("Eleição iniciada com sucesso!");
+    public void addCandidato(int numero, Candidato candidato) {
+        candidatos.put(numero, candidato);
+        if (candidatos.size() == 5){
+            this.candidatos = candidatos;
+            iniciaEleicao();
+        }else {
+            System.out.printf("%d candidatos cadastrados. Faltam %d.\n", candidatos.size(), 5-candidatos.size());
+        }
+    }
+
+    public void iniciaEleicao(){
+        if (this.candidatos.size() == 5) {
+            System.out.println("Eleição iniciada com sucesso!");
+        } else {
+            System.out.printf("Eleição não pode iniciar com %d candidatos\n", this.candidatos.size());
+        }
     }
 
     public int getVotosEmBranco() {
@@ -39,18 +44,15 @@ public class Eleicao {
     }
 
     public String getNomeCandidato(int numeroCandidato) {
-        Candidato candidato = numeroParaCandidato(numeroCandidato);
-        return candidato.getNomeCompleto();
+        return this.candidatos.get(numeroCandidato).getNomeCompleto();
     }
 
     public int getVotosCandidato(int numeroCandidato) {
-        Candidato candidato = numeroParaCandidato(numeroCandidato);
-
-        return candidato.getVotos();
+        return this.candidatos.get(numeroCandidato).getVotos();
     }
 
     public void votar(int numeroCandidato) {
-        Candidato candidato = numeroParaCandidato(numeroCandidato);
+        Candidato candidato = this.candidatos.get(numeroCandidato);
 
         if (candidato != null) {
             candidato.addVoto();
@@ -64,34 +66,14 @@ public class Eleicao {
     }
 
     public Candidato numeroParaCandidato(int numero) {
-        switch (numero) {
-            case 1:
-                return candidato1;
-            case 2:
-                return candidato2;
-            case 3:
-                return candidato3;
-            case 4:
-                return candidato4;
-            case 5:
-                return candidato5;
-            default:
-                return null;
-        }
-    }
-
-    private void atualizarPlacar(Candidato candidatoVotado) {
-
+        return candidatos.get(numero);
     }
 
     public void resetarEleicao() {
         this.votosNulos = 0;
         this.votosEmBranco = 0;
-        candidato1.zeraVotos();
-        candidato2.zeraVotos();
-        candidato3.zeraVotos();
-        candidato4.zeraVotos();
-        candidato5.zeraVotos();
+
+        /* falta zerar voto de todo mundo, percorrendo todo o map */
 
         System.out.println("Eleição resetada!");
     }

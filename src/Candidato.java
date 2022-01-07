@@ -1,12 +1,11 @@
-public class Candidato {
+public class Candidato extends Pessoa {
     private static int numeroCandidatos = 0;
-    private String nomeCompleto;
     private final int numeroCandidato;
     private int votos = 0;
 
     public Candidato(String nome) {
+        super(nome);
         this.numeroCandidato = Candidato.numeroCandidatos + 1;
-        this.nomeCompleto = nome;
         numeroCandidatos++;
     }
 
@@ -16,14 +15,6 @@ public class Candidato {
 
     public void zeraVotos(){
         this.votos = 0;
-    }
-
-    public String getNomeCompleto() {
-        return nomeCompleto;
-    }
-
-    public void setNomeCompleto(String nomeCompleto) {
-        this.nomeCompleto = nomeCompleto;
     }
 
     public int getNumeroCandidato() {
@@ -40,5 +31,10 @@ public class Candidato {
 
     public int getVotos() {
         return votos;
+    }
+
+    @Override
+    public String toString() {
+        return super.getNomeCompleto();
     }
 }
