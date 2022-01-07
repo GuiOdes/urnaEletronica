@@ -1,3 +1,7 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
 public class Eleicao {
     private Candidato candidato1;
     private Candidato candidato2;
@@ -8,13 +12,7 @@ public class Eleicao {
     private int votosNulos = 0;
     private int votosEmBranco = 0;
 
-    private Candidato primeiroLugar;
-    private Candidato segundoLugar;
-    private Candidato terceiroLugar;
-    private Candidato quartoLugar;
-    private Candidato quintoLugar;
-
-    public Eleicao (Candidato candidato1, Candidato candidato2, Candidato candidato3, Candidato candidato4, Candidato candidato5) {
+    public Eleicao(Candidato candidato1, Candidato candidato2, Candidato candidato3, Candidato candidato4, Candidato candidato5) {
         this.candidato1 = candidato1;
         this.candidato2 = candidato2;
         this.candidato3 = candidato3;
@@ -56,7 +54,7 @@ public class Eleicao {
 
         if (candidato != null) {
             candidato.addVoto();
-        } else if (numeroCandidato == 0){
+        } else if (numeroCandidato == 0) {
             votoBranco();
         } else {
             votoNulo();
@@ -96,5 +94,23 @@ public class Eleicao {
         candidato5.zeraVotos();
 
         System.out.println("Eleição resetada!");
+    }
+
+    public void mostraResultados() {
+        for (int x = 1; x < 6; x++) {
+            System.out.printf("\n%s : %d votos", this.getNomeCandidato(x), this.getVotosCandidato(x));
+        }
+    }
+
+    public void iniciarVotacao() {
+        Scanner entrada = new Scanner(System.in);
+        int voto = 0;
+        while (voto != -1) {
+            System.out.print("\nNúmero do candidato -> ");
+            voto = entrada.nextInt();
+            entrada.nextLine();
+
+            this.votar(voto);
+        }
     }
 }
