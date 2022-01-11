@@ -9,21 +9,22 @@ public class Eleicao {
     private int votosEmBranco = 0;
 
 
-    public void addCandidato(int numero, Candidato candidato) {
-        candidatos.put(numero, candidato);
+    public void addCandidato(int numero, String nome) {
         if (candidatos.size() == 5){
             iniciaEleicao();
         }else {
+            Candidato candidato = new Candidato(nome);
+            candidatos.put(numero, candidato);
             System.out.printf("%d candidatos cadastrados. Faltam %d.\n", candidatos.size(), 5-candidatos.size());
         }
     }
 
-    public void iniciaEleicao(){
-        if (this.candidatos.size() == 5) {
-            System.out.println("Eleição iniciada com sucesso!");
-        } else {
-            System.out.printf("Eleição não pode iniciar com %d candidatos\n", this.candidatos.size());
-        }
+    public boolean iniciaEleicao(){
+        return this.candidatos.size() == 5;
+    }
+
+    public Map<Integer, Candidato> getCandidatos() {
+        return candidatos;
     }
 
     public int getVotosEmBranco() {
@@ -80,28 +81,41 @@ public class Eleicao {
         System.out.println("Eleição resetada!");
     }
 
+    public void mostraCandidatos() {
+        for (Map.Entry<Integer, Candidato> linha : candidatos.entrySet()) {
+            Integer numero = linha.getKey();
+            Candidato nome = linha.getValue();
+
+            System.out.printf("\n%s : Vote %d", nome, numero);
+        }
+    }
+
     public void mostraResultados() {
         Candidato maior = null;
         int aux = 0;
-        for (int x = 1; x < 6; x++) {
-            if (this.getVotosCandidato(x) > aux){
-                maior = this.numeroParaCandidato(x);
+
+        for (Map.Entry<Integer, Candidato> linha : candidatos.entrySet()) {
+            if (linha.getValue().getVotos() > aux){
+                maior = linha.getValue();
             }
-            System.out.printf("\n%s : %d votos", this.getNomeCandidato(x), this.getVotosCandidato(x));
+            System.out.printf("\n%s(%d) : %d votos", linha.getValue().getNomeCompleto(), linha.getKey(), linha.getValue().getVotos());
         }
 
-        System.out.println("\n\nO vencedor é " + maior);
+        System.out.println("\n\n-> O vencedor é " + maior);
     }
 
     public void iniciarVotacao() {
         Scanner entrada = new Scanner(System.in);
         int voto = 0;
         while (voto != -1) {
+            Interface.linha();
+            mostraCandidatos();
             System.out.print("\nNúmero do candidato -> ");
             voto = entrada.nextInt();
             entrada.nextLine();
 
             this.votar(voto);
         }
+        mostraResultados();
     }
 }
