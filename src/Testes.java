@@ -1,4 +1,5 @@
-import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Testes {
     public static void main(String[] args) {
@@ -9,8 +10,6 @@ public class Testes {
         Candidato divino = new Candidato("Divino Pinto");
         Candidato sofia = new Candidato("Sofia de Deus");
 
-        //Eleicao eleicao1 = new Eleicao(jonas, lucas, peres, divino, sofia);
-
         Eleicao eleicao1 = new Eleicao();
 
         eleicao1.addCandidato(1, jonas);
@@ -18,6 +17,12 @@ public class Testes {
         eleicao1.addCandidato(3, peres);
         eleicao1.addCandidato(4, divino);
         eleicao1.addCandidato(5, sofia);
+
+        eleicao1.votar(1);
+        eleicao1.votar(2);
+        eleicao1.votar(2);
+
+        eleicao1.mostraResultados();
 
     }
 }

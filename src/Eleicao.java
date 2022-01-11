@@ -3,7 +3,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Eleicao {
-    private Map<Integer, Candidato> candidatos = new HashMap<>();
+    private final Map<Integer, Candidato> candidatos = new HashMap<>();
 
     private int votosNulos = 0;
     private int votosEmBranco = 0;
@@ -12,7 +12,6 @@ public class Eleicao {
     public void addCandidato(int numero, Candidato candidato) {
         candidatos.put(numero, candidato);
         if (candidatos.size() == 5){
-            this.candidatos = candidatos;
             iniciaEleicao();
         }else {
             System.out.printf("%d candidatos cadastrados. Faltam %d.\n", candidatos.size(), 5-candidatos.size());
@@ -73,15 +72,25 @@ public class Eleicao {
         this.votosNulos = 0;
         this.votosEmBranco = 0;
 
-        /* falta zerar voto de todo mundo, percorrendo todo o map */
+        // percorre todos os candidatos da eleicao para zerar os votos de cada um
+        for (Map.Entry<Integer, Candidato> linha : candidatos.entrySet()) {
+            linha.getValue().zeraVotos();
+        }
 
         System.out.println("Eleição resetada!");
     }
 
     public void mostraResultados() {
+        Candidato maior = null;
+        int aux = 0;
         for (int x = 1; x < 6; x++) {
+            if (this.getVotosCandidato(x) > aux){
+                maior = this.numeroParaCandidato(x);
+            }
             System.out.printf("\n%s : %d votos", this.getNomeCandidato(x), this.getVotosCandidato(x));
         }
+
+        System.out.println("\n\nO vencedor é " + maior);
     }
 
     public void iniciarVotacao() {
