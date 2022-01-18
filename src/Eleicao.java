@@ -1,6 +1,5 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Eleicao {
     private final Map<Integer, Candidato> candidatos = new HashMap<>();
@@ -91,17 +90,18 @@ public class Eleicao {
     }
 
     public void mostraResultados() {
-        Candidato maior = null;
-        int aux = 0;
+        List<Candidato> listaCandidatos = new ArrayList<>();
+        listaCandidatos.addAll(candidatos.values());
 
-        for (Map.Entry<Integer, Candidato> linha : candidatos.entrySet()) {
-            if (linha.getValue().getVotos() > aux){
-                maior = linha.getValue();
-            }
-            System.out.printf("\n%s(%d) : %d votos", linha.getValue().getNomeCompleto(), linha.getKey(), linha.getValue().getVotos());
-        }
+        // Ordenando a lista de candidatos conforme a quantidade de votos de cada um
+        listaCandidatos.sort(Comparator.comparingInt(Candidato::getVotos).reversed());
 
-        System.out.println("\n\n-> O vencedor é " + maior);
+        AtomicInteger cont = new AtomicInteger(1); // Variável especial para usar no foreach de lambda
+
+        listaCandidatos // Início da listagem a partir da própria lista com lambdas e stream
+                .stream() // Iniciando stream para mapear a lista
+                .map(s -> cont.getAndIncrement() + "º Lugar -> " + s.getNomeCompleto()) // Mapeando a lista, colocando os resultados ordenados concatenados à saída
+                .forEach(System.out::println); // Exibindo a saída
     }
 
     public void iniciarVotacao() {

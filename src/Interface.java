@@ -1,5 +1,3 @@
-import org.w3c.dom.css.ElementCSSInlineStyle;
-
 import java.util.Scanner;
 
 public class Interface {
